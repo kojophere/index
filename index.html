@@ -139,7 +139,7 @@
         // Function to create a tracking link
         function createTrackingLink(destinationUrl) {
             const linkId = generateUniqueId();
-            const trackingUrl = `${window.location.origin}${window.location.pathname}?track=${linkId}&redirect=${encodeURIComponent(destinationUrl)}`;
+            const trackingUrl = `${window.location.href.split('?')[0]}?track=${linkId}&redirect=${encodeURIComponent(destinationUrl)}`;
             
             const now = new Date();
             const formattedDate = now.toLocaleString('en-US', {
@@ -357,7 +357,9 @@
             loadSavedLinks();
             
             // Generate tracking link button click
-            generateLinkBtn.addEventListener('click', () => {
+            generateLinkBtn.addEventListener('click', generateLink);
+            
+            function generateLink() {
                 const destinationUrl = destinationUrlInput.value.trim();
                 
                 if (!destinationUrl) {
@@ -382,12 +384,12 @@
                 
                 // Clear input
                 destinationUrlInput.value = '';
-            });
+            }
             
             // Allow pressing Enter in the input field
             destinationUrlInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    generateLinkBtn.click();
+                    generateLink();
                 }
             });
         });
